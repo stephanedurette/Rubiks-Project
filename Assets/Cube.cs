@@ -2,19 +2,20 @@ using System;
 
 public class Cube
 {
-    public const byte RED = 0x01;
-    public const byte BLUE = 0x02;
-    public const byte GREEN = 0x04;
-    public const byte YELLOW = 0x08;
-    public const byte ORANGE = 0x10;
-    public const byte WHITE = 0x20;
+    public const byte ColorRed = 0x01;
+    public const byte ColorBlue = 0x02;
+    public const byte ColorGreen = 0x04;
+    public const byte ColorYellow = 0x08;
+    public const byte ColorOrange = 0x10;
+    public const byte ColorWhite = 0x20;
 
-    public ulong F, R, L, B, U, D;
+    public ulong FaceF, FaceR, FaceL, FaceB, FaceU, FaceD;
 
     private readonly int[] clockWiseRotationFaceIndexRemap = { 5, 3, 0, 6, 1, 7, 4, 2 };
     private readonly int[] counterClockWiseRotationFaceIndexRemap = { 2, 4, 7, 1, 6, 0, 5, 3 };
 
     private byte GetFaceColor(ulong face, byte index) => (byte)((face >> (index * 8)) & 0xFF);
+    private void SetFaceColor(ref ulong face, byte index, byte color) => face |= ((ulong)color << index * 8);
 
     enum RotationDirection { Clockwise, CounterClockwise }
 
@@ -25,12 +26,12 @@ public class Cube
 
     private void SetInitialColors()
     {
-        FillFace(ref F, GREEN);
-        FillFace(ref R, RED);
-        FillFace(ref B, BLUE);
-        FillFace(ref U, WHITE);
-        FillFace(ref D, YELLOW);
-        FillFace(ref L, ORANGE);
+        FillFace(ref FaceF, ColorGreen);
+        FillFace(ref FaceR, ColorRed);
+        FillFace(ref FaceB, ColorBlue);
+        FillFace(ref FaceU, ColorWhite);
+        FillFace(ref FaceD, ColorYellow);
+        FillFace(ref FaceL, ColorOrange);
     }
 
     private void FillFace(ref ulong face, byte color)
@@ -52,8 +53,10 @@ public class Cube
         face = newFace;
     }
 
-    private void RotateFaceEdges(ref ulong face)
+    public void F()
     {
+        RotateFace(ref FaceF);
+
 
     }
 }

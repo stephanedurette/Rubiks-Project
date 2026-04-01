@@ -21,9 +21,9 @@ public class Cube
         F_Rotation = new RotationData(
             new RotationFace[] {
                 new RotationFace(FaceU, new int[]{ 5, 6, 7}),
-                new RotationFace(FaceL, new int[]{ 2, 4, 7}),
-                new RotationFace(FaceD, new int[]{ 0, 1, 2}),
-                new RotationFace(FaceR, new int[]{ 5, 3, 0}),
+                new RotationFace(FaceL, new int[]{ 7, 4, 2}),
+                new RotationFace(FaceD, new int[]{ 2, 1, 0}),
+                new RotationFace(FaceR, new int[]{ 0, 3, 5}),
         });
     }
 
@@ -34,29 +34,8 @@ public class Cube
 
     public void F()
     {
-        /*
-        RotateFace(ref FaceF);
-
-        byte upperEdge5 = GetFaceColor(FaceU, 5);
-        byte upperEdge6 = GetFaceColor(FaceU, 6);
-        byte upperEdge7 = GetFaceColor(FaceU, 7);
-
-        TransferFaceColor(FaceL, 2, ref FaceU, 5);
-        TransferFaceColor(FaceL, 4, ref FaceU, 6);
-        TransferFaceColor(FaceL, 7, ref FaceU, 7);
-
-        TransferFaceColor(FaceD, 0, ref FaceL, 2);
-        TransferFaceColor(FaceD, 1, ref FaceL, 4);
-        TransferFaceColor(FaceD, 2, ref FaceL, 7);
-
-        TransferFaceColor(FaceR, 5, ref FaceD, 0);
-        TransferFaceColor(FaceR, 3, ref FaceD, 1);
-        TransferFaceColor(FaceR, 0, ref FaceD, 2);
-
-        SetFaceColor(ref FaceR, 0, upperEdge5);
-        SetFaceColor(ref FaceR, 3, upperEdge6);
-        SetFaceColor(ref FaceR, 5, upperEdge7);
-        */
+        FaceF.Rotate(RotationDirection.Clockwise);
+        F_Rotation.Rotate();
     }
 
     public class RotationData
@@ -70,7 +49,24 @@ public class Cube
 
         public void Rotate()
         {
+            byte[] firstRotationFaceColors = new byte[3];
+            for(int i = 0; i < RotationFaces[0].Indexes.Length; i++)
+            {
+                firstRotationFaceColors[i] = RotationFaces[0].Face.GetColor(RotationFaces[0].Indexes[i]);
+            }
 
+            for(int i = 1; i < RotationFaces.Length; i++)
+            {
+                for (int j = 0; j < RotationFaces[i].Indexes.Length; j++)
+                {
+                    Face.TransferColor(RotationFaces[i].Face, RotationFaces[i].Indexes[j], RotationFaces[i - 1].Face, RotationFaces[i - 1].Indexes[j]);
+                }
+            }
+
+            for (int i = 0; i < RotationFaces[^1].Indexes.Length; i++)
+            {
+                RotationFaces[^1].Face.SetColor(RotationFaces[^1].Indexes[i], firstRotationFaceColors[i]);
+            }
         }
     }
 
@@ -110,9 +106,9 @@ public class Cube
 
         public byte GetColor(int index) => (byte)((Value >> (index * 8)) & 0xFF);
 
-        public void SetColor(byte index, byte color) => Value |= ((ulong)color << index * 8);
+        public void SetColor(int index, byte color) => Value |= ((ulong)color << index * 8); //not properly clearing bits before setting the new value
 
-        public static void TransferColor(Face from, byte fromIndex, Face to, byte toIndex) => to.SetColor(toIndex, from.GetColor(fromIndex));
+        public static void TransferColor(Face from, int fromIndex, Face to, int toIndex) => to.SetColor(toIndex, from.GetColor(fromIndex));
 
         public void Fill(byte color)
         {

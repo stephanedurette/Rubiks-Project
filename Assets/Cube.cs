@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 
 public class Cube
 {
@@ -16,6 +17,8 @@ public class Cube
 
     private byte GetFaceColor(ulong face, byte index) => (byte)((face >> (index * 8)) & 0xFF);
     private void SetFaceColor(ref ulong face, byte index, byte color) => face |= ((ulong)color << index * 8);
+
+    private void TransferFaceColor(ulong fromFace, byte fromIndex, ref ulong toFace, byte toIndex) => SetFaceColor(ref toFace, toIndex, GetFaceColor(fromFace, fromIndex));
 
     enum RotationDirection { Clockwise, CounterClockwise }
 
@@ -53,10 +56,33 @@ public class Cube
         face = newFace;
     }
 
+    public override string ToString()
+    {
+        return ($"Front Face:    {FaceF:x16}\nUpper Face:    {FaceU:x16}\nDown Face:    {FaceD:x16}\nLeft Face:    {FaceL:x16}\nRight Face:    {FaceR:x16}\nBack Face:    {FaceB:x16}");
+    }
+
     public void F()
     {
         RotateFace(ref FaceF);
 
+        byte upperEdge5 = GetFaceColor(FaceU, 5);
+        byte upperEdge6 = GetFaceColor(FaceU, 6);
+        byte upperEdge7 = GetFaceColor(FaceU, 7);
 
+        TransferFaceColor(FaceL, 2, ref FaceU, 5);
+        TransferFaceColor(FaceL, 4, ref FaceU, 6);
+        TransferFaceColor(FaceL, 7, ref FaceU, 7);
+
+        TransferFaceColor(FaceD, 0, ref FaceL, 2);
+        TransferFaceColor(FaceD, 1, ref FaceL, 4);
+        TransferFaceColor(FaceD, 2, ref FaceL, 7);
+
+        TransferFaceColor(FaceR, 5, ref FaceD, 0);
+        TransferFaceColor(FaceR, 3, ref FaceD, 1);
+        TransferFaceColor(FaceR, 0, ref FaceD, 2);
+
+        SetFaceColor(ref FaceR, 0, upperEdge5);
+        SetFaceColor(ref FaceR, 3, upperEdge6);
+        SetFaceColor(ref FaceR, 5, upperEdge7);
     }
 }

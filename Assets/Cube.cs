@@ -47,7 +47,7 @@ public class Cube
             this.RotationFaces = rotationFaces;
         }
 
-        public void Rotate()
+        public void Rotate() //clockwise and counterclockwise
         {
             byte[] firstRotationFaceColors = new byte[3];
             for(int i = 0; i < RotationFaces[0].Indexes.Length; i++)
@@ -106,7 +106,7 @@ public class Cube
 
         public byte GetColor(int index) => (byte)((Value >> (index * 8)) & 0xFF);
 
-        public void SetColor(int index, byte color) => Value |= ((ulong)color << index * 8); //not properly clearing bits before setting the new value
+        public void SetColor(int index, byte color) => Value = (Value & ~((ulong)0xFF << index * 8)) | ((ulong)color << (index * 8));
 
         public static void TransferColor(Face from, int fromIndex, Face to, int toIndex) => to.SetColor(toIndex, from.GetColor(fromIndex));
 

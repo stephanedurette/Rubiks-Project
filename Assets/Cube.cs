@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 public class Cube
 {
     public Face FaceF, FaceR, FaceL, FaceB, FaceU, FaceD;
 
     public RotationData F_Rotation;
+
+    public enum RotationDirection { Clockwise, CounterClockwise }
 
     public Cube()
     {
@@ -93,10 +96,10 @@ public class Cube
         public static readonly byte ColorOrange = 0x10;
         public static readonly byte ColorWhite = 0x20;
 
-        public static readonly int[] clockWiseRotationFaceIndexRemap = { 5, 3, 0, 6, 1, 7, 4, 2 };
-        public static readonly int[] counterClockWiseRotationFaceIndexRemap = { 2, 4, 7, 1, 6, 0, 5, 3 };
-
-        public enum RotationDirection { Clockwise, CounterClockwise }
+        public static Dictionary<RotationDirection, int[]> rotationRemaps = new(){
+            { RotationDirection.Clockwise, new int[]{ 5, 3, 0, 6, 1, 7, 4, 2 } },
+            { RotationDirection.CounterClockwise, new int[]{ 2, 4, 7, 1, 6, 0, 5, 3 } }
+        };
 
         private ulong Value;
 
@@ -125,7 +128,7 @@ public class Cube
 
             for (int i = 0; i < 8; i++)
             {
-                byte newIndex = (byte)(direction == RotationDirection.Clockwise ? clockWiseRotationFaceIndexRemap : counterClockWiseRotationFaceIndexRemap)[i];
+                byte newIndex = (byte)rotationRemaps[direction][i];
                 newValue |= ((ulong)GetColor(newIndex) << (i * 8));
             }
 

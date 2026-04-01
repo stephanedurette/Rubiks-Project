@@ -1,68 +1,37 @@
 using System;
-using Unity.VisualScripting;
 
 public class Cube
 {
-    public const byte ColorRed = 0x01;
-    public const byte ColorBlue = 0x02;
-    public const byte ColorGreen = 0x04;
-    public const byte ColorYellow = 0x08;
-    public const byte ColorOrange = 0x10;
-    public const byte ColorWhite = 0x20;
+    public Face FaceF, FaceR, FaceL, FaceB, FaceU, FaceD;
 
-    public ulong FaceF, FaceR, FaceL, FaceB, FaceU, FaceD;
-
-    private readonly int[] clockWiseRotationFaceIndexRemap = { 5, 3, 0, 6, 1, 7, 4, 2 };
-    private readonly int[] counterClockWiseRotationFaceIndexRemap = { 2, 4, 7, 1, 6, 0, 5, 3 };
-
-    private byte GetFaceColor(ulong face, byte index) => (byte)((face >> (index * 8)) & 0xFF);
-    private void SetFaceColor(ref ulong face, byte index, byte color) => face |= ((ulong)color << index * 8);
-
-    private void TransferFaceColor(ulong fromFace, byte fromIndex, ref ulong toFace, byte toIndex) => SetFaceColor(ref toFace, toIndex, GetFaceColor(fromFace, fromIndex));
-
-    enum RotationDirection { Clockwise, CounterClockwise }
+    public RotationData F_Rotation;
 
     public Cube()
     {
-        SetInitialColors();
-    }
+        FaceF = new(Face.ColorGreen);
+        FaceR = new(Face.ColorRed);
+        FaceL = new(Face.ColorOrange);
+        FaceB = new(Face.ColorBlue);
+        FaceU = new(Face.ColorWhite);
+        FaceD = new(Face.ColorYellow);
 
-    private void SetInitialColors()
-    {
-        FillFace(ref FaceF, ColorGreen);
-        FillFace(ref FaceR, ColorRed);
-        FillFace(ref FaceB, ColorBlue);
-        FillFace(ref FaceU, ColorWhite);
-        FillFace(ref FaceD, ColorYellow);
-        FillFace(ref FaceL, ColorOrange);
-    }
-
-    private void FillFace(ref ulong face, byte color)
-    {
-        for (int i = 0; i < 8; i++)
-        {
-            face |= ((ulong)color << (i * 8));
-        }
-    }
-
-    private void RotateFace(ref ulong face, RotationDirection direction = RotationDirection.Clockwise) {
-        ulong newFace = 0;
-
-        for (int i = 0; i < 8; i++) { 
-            byte newIndex = (byte)(direction == RotationDirection.Clockwise ? clockWiseRotationFaceIndexRemap : counterClockWiseRotationFaceIndexRemap)[i];
-            newFace |= ((ulong)GetFaceColor(face, newIndex) << (i * 8));
-        }
-
-        face = newFace;
+        F_Rotation = new RotationData(
+            new RotationFace[] {
+                new RotationFace(FaceU, new int[]{ 5, 6, 7}),
+                new RotationFace(FaceL, new int[]{ 2, 4, 7}),
+                new RotationFace(FaceD, new int[]{ 0, 1, 2}),
+                new RotationFace(FaceR, new int[]{ 5, 3, 0}),
+        });
     }
 
     public override string ToString()
     {
-        return ($"Front Face:    {FaceF:x16}\nUpper Face:    {FaceU:x16}\nDown Face:    {FaceD:x16}\nLeft Face:    {FaceL:x16}\nRight Face:    {FaceR:x16}\nBack Face:    {FaceB:x16}");
+        return ($"Front: {FaceF}\nUpper: {FaceU}\nDown: {FaceD}\nLeft: {FaceL}\nRight: {FaceR}\nBack: {FaceB}");
     }
 
     public void F()
     {
+        /*
         RotateFace(ref FaceF);
 
         byte upperEdge5 = GetFaceColor(FaceU, 5);
@@ -84,5 +53,88 @@ public class Cube
         SetFaceColor(ref FaceR, 0, upperEdge5);
         SetFaceColor(ref FaceR, 3, upperEdge6);
         SetFaceColor(ref FaceR, 5, upperEdge7);
+        */
+    }
+
+    public class RotationData
+    {
+        public RotationFace[] RotationFaces;
+
+        public RotationData(RotationFace[] rotationFaces)
+        {
+            this.RotationFaces = rotationFaces;
+        }
+
+        public void Rotate()
+        {
+
+        }
+    }
+
+    public class RotationFace
+    {
+        public Face Face;
+        public int[] Indexes = { 0, 0, 0 };
+
+        public RotationFace(Face face, int[] indices)
+        {
+            this.Face = face;
+            this.Indexes = indices;
+        }
+
+    }
+
+    public class Face
+    {
+        public static readonly byte ColorRed = 0x01;
+        public static readonly byte ColorBlue = 0x02;
+        public static readonly byte ColorGreen = 0x04;
+        public static readonly byte ColorYellow = 0x08;
+        public static readonly byte ColorOrange = 0x10;
+        public static readonly byte ColorWhite = 0x20;
+
+        public static readonly int[] clockWiseRotationFaceIndexRemap = { 5, 3, 0, 6, 1, 7, 4, 2 };
+        public static readonly int[] counterClockWiseRotationFaceIndexRemap = { 2, 4, 7, 1, 6, 0, 5, 3 };
+
+        public enum RotationDirection { Clockwise, CounterClockwise }
+
+        private ulong Value;
+
+        public Face(byte color)
+        {
+            Fill(color);
+        }
+
+        public byte GetColor(int index) => (byte)((Value >> (index * 8)) & 0xFF);
+
+        public void SetColor(byte index, byte color) => Value |= ((ulong)color << index * 8);
+
+        public static void TransferColor(Face from, byte fromIndex, Face to, byte toIndex) => to.SetColor(toIndex, from.GetColor(fromIndex));
+
+        public void Fill(byte color)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Value |= ((ulong)color << (i * 8));
+            }
+        }
+
+        public void Rotate(RotationDirection direction = RotationDirection.Clockwise)
+        {
+            ulong newValue = 0;
+
+            for (int i = 0; i < 8; i++)
+            {
+                byte newIndex = (byte)(direction == RotationDirection.Clockwise ? clockWiseRotationFaceIndexRemap : counterClockWiseRotationFaceIndexRemap)[i];
+                newValue |= ((ulong)GetColor(newIndex) << (i * 8));
+            }
+
+            Value = newValue;
+        }
+
+        public override string ToString()
+        {
+            return $"{Value:x16}";
+        }
     }
 }

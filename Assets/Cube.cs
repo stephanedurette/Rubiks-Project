@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal;
 using System;
 using System.Collections.Generic;
 
@@ -5,7 +6,7 @@ public class Cube
 {
     public Face FaceF, FaceR, FaceL, FaceB, FaceU, FaceD;
 
-    public RotationData F_Rotation;
+    public RotationData F_Rotation, R_Rotation, L_Rotation, B_Rotation, U_Rotation, D_Rotation;
 
     public enum RotationDirection { Clockwise, CounterClockwise }
 
@@ -25,6 +26,46 @@ public class Cube
                 new RotationFace(FaceD, new int[]{ 2, 1, 0}),
                 new RotationFace(FaceR, new int[]{ 0, 3, 5}),
         });
+
+        R_Rotation = new RotationData(
+            new RotationFace[] {
+                new RotationFace(FaceF, new int[]{ 2, 4, 7}),
+                new RotationFace(FaceU, new int[]{ 2, 4, 7}),
+                new RotationFace(FaceB, new int[]{ 5, 3, 0}),
+                new RotationFace(FaceD, new int[]{ 2, 4, 7}),
+        });
+
+        L_Rotation = new RotationData(
+            new RotationFace[] {
+                new RotationFace(FaceF, new int[]{ 0, 3, 5}),
+                new RotationFace(FaceD, new int[]{ 0, 3, 5}),
+                new RotationFace(FaceB, new int[]{ 7, 4, 2}),
+                new RotationFace(FaceU, new int[]{ 0, 3, 5}),
+        });
+
+        B_Rotation = new RotationData(
+            new RotationFace[] {
+                new RotationFace(FaceR, new int[]{ 2, 4, 7}),
+                new RotationFace(FaceD, new int[]{ 7, 6, 5}),
+                new RotationFace(FaceL, new int[]{ 5, 3, 0}),
+                new RotationFace(FaceU, new int[]{ 0, 1, 2}),
+        });
+
+        U_Rotation = new RotationData(
+            new RotationFace[] {
+                new RotationFace(FaceF, new int[]{ 2, 1, 0}),
+                new RotationFace(FaceL, new int[]{ 2, 1, 0}),
+                new RotationFace(FaceB, new int[]{ 2, 1, 0}),
+                new RotationFace(FaceR, new int[]{ 2, 1, 0}),
+        });
+
+        D_Rotation = new RotationData(
+            new RotationFace[] {
+                new RotationFace(FaceF, new int[]{ 5, 6, 7}),
+                new RotationFace(FaceR, new int[]{ 5, 6, 7}),
+                new RotationFace(FaceB, new int[]{ 5, 6, 7}),
+                new RotationFace(FaceL, new int[]{ 5, 6, 7}),
+        });
     }
 
     public override string ToString()
@@ -32,11 +73,43 @@ public class Cube
         return ($"Front: {FaceF}\nUpper: {FaceU}\nDown: {FaceD}\nLeft: {FaceL}\nRight: {FaceR}\nBack: {FaceB}");
     }
 
-    public void F()
+    public void F(RotationDirection direction = RotationDirection.Clockwise)
     {
-        FaceF.Rotate(RotationDirection.Clockwise);
-        F_Rotation.Rotate();
+        FaceF.Rotate(direction);
+        F_Rotation.Rotate(direction);
     }
+
+    public void R(RotationDirection direction = RotationDirection.Clockwise)
+    {
+        FaceR.Rotate(direction);
+        R_Rotation.Rotate(direction);
+    }
+
+    public void U(RotationDirection direction = RotationDirection.Clockwise)
+    {
+        FaceU.Rotate(direction);
+        U_Rotation.Rotate(direction);
+    }
+
+    public void L(RotationDirection direction = RotationDirection.Clockwise)
+    {
+        FaceL.Rotate(direction);
+        L_Rotation.Rotate(direction);
+    }
+
+    public void D(RotationDirection direction = RotationDirection.Clockwise)
+    {
+        FaceD.Rotate(direction);
+        D_Rotation.Rotate(direction);
+    }
+
+    public void B(RotationDirection direction = RotationDirection.Clockwise)
+    {
+        FaceB.Rotate(direction);
+        B_Rotation.Rotate(direction);
+    }
+
+    //shuffle the cube
 
     public class RotationData
     {
@@ -47,25 +120,37 @@ public class Cube
             this.RotationFaces = rotationFaces;
         }
 
-        public void Rotate() //clockwise and counterclockwise
+        public void Rotate(RotationDirection direction = RotationDirection.Clockwise) //clockwise and counterclockwise
         {
+            int startIndex = direction == RotationDirection.Clockwise ? 0 : 3;
+            int endIndex = direction == RotationDirection.Clockwise ? 3 : 0;
+            int incrementer = direction == RotationDirection.Clockwise ? 1 : -1;
+
+            //cache starting edge values
             byte[] firstRotationFaceColors = new byte[3];
-            for(int i = 0; i < RotationFaces[0].Indexes.Length; i++)
+            for(int i = 0; i < RotationFaces[startIndex].Indexes.Length; i++)
             {
-                firstRotationFaceColors[i] = RotationFaces[0].Face.GetColor(RotationFaces[0].Indexes[i]);
+                firstRotationFaceColors[i] = RotationFaces[startIndex].Face.GetColor(RotationFaces[startIndex].Indexes[i]);
             }
 
-            for(int i = 1; i < RotationFaces.Length; i++)
+            //loop through edges, replacing values with the next ones
+            int iterations = 0;
+            int currentIndex = startIndex;
+            while(iterations < 3)
             {
-                for (int j = 0; j < RotationFaces[i].Indexes.Length; j++)
+                iterations++;
+                currentIndex += incrementer;
+
+                for (int j = 0; j < RotationFaces[currentIndex].Indexes.Length; j++)
                 {
-                    Face.TransferColor(RotationFaces[i].Face, RotationFaces[i].Indexes[j], RotationFaces[i - 1].Face, RotationFaces[i - 1].Indexes[j]);
+                    Face.TransferColor(RotationFaces[currentIndex].Face, RotationFaces[currentIndex].Indexes[j], RotationFaces[currentIndex - incrementer].Face, RotationFaces[currentIndex - incrementer].Indexes[j]);
                 }
             }
 
-            for (int i = 0; i < RotationFaces[^1].Indexes.Length; i++)
+            //set the final edge to the cached values
+            for (int i = 0; i < RotationFaces[endIndex].Indexes.Length; i++)
             {
-                RotationFaces[^1].Face.SetColor(RotationFaces[^1].Indexes[i], firstRotationFaceColors[i]);
+                RotationFaces[endIndex].Face.SetColor(RotationFaces[endIndex].Indexes[i], firstRotationFaceColors[i]);
             }
         }
     }

@@ -111,6 +111,7 @@ public class Cube
 
     //shuffle the cube
 
+
     public class RotationData
     {
         public RotationFace[] RotationFaces;

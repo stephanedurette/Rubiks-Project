@@ -116,7 +116,7 @@ public class Cube
 
     public override string ToString()
     {
-        return ($"Front: {FaceF}\nUpper: {FaceU}\nDown: {FaceD}\nLeft: {FaceL}\nRight: {FaceR}\nBack: {FaceB}");
+        return ($"-- Front --\n{FaceF}\n-- Upper --\n{FaceU}\n-- Down --\n{FaceD}\n-- Left --\n{FaceL}\n-- Right --\n{FaceR}\n-- Back --\n{FaceB}");
     }
 
     public class Move
@@ -241,7 +241,12 @@ public class Cube
 
         public override string ToString()
         {
-            return $"{Value:x16}";
+            Dictionary<byte, string> colorNames = new Dictionary<byte, string>()
+            {
+                { ColorRed, "Red"}, { ColorBlue, "Blue"}, { ColorGreen, "Green"}, { ColorYellow, "Yellow"}, { ColorWhite, "White"}, { ColorOrange, "Orange"}
+            };
+
+            return $"{colorNames[GetColor(8)]} {colorNames[GetColor(7)]} {colorNames[GetColor(6)]}\n{colorNames[GetColor(5)]} {colorNames[GetColor(4)]} {colorNames[GetColor(3)]}\n{colorNames[GetColor(2)]} {colorNames[GetColor(1)]} {colorNames[GetColor(0)]}";
         }
     }
 }

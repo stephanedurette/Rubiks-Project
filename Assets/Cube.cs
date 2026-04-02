@@ -12,6 +12,8 @@ public class Cube
 
     public Move F, R, B, L, U, D, F_, R_, B_, L_, U_, D_;
 
+    public List<Move> Moves;
+
     public Cube()
     {
         FaceF = new(Face.ColorGreen);
@@ -94,6 +96,22 @@ public class Cube
         U_.ReverseAction = U.ExecuteAction;
         D_.ReverseAction = D.ExecuteAction;
         B_.ReverseAction = B.ExecuteAction;
+
+        Moves = new() { F, R, B, L, U, D, F_, R_, B_, L_, U_, D_ };
+    }
+
+    public Move[] GetRandomMoveList(int count)
+    {
+        Random rnd = new Random();
+
+        Move[] list = new Move[count];
+
+        for(int i = 0; i < count; i++)
+        {
+            list[i] = Moves[rnd.Next(0, Moves.Count)];
+        }
+
+        return list;
     }
 
     public override string ToString()

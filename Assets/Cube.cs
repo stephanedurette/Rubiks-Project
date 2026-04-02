@@ -119,6 +119,17 @@ public class Cube
         return ($"---- CUBE STATE ----\n-- Front --\n{FaceF}\n-- Upper --\n{FaceU}\n-- Down --\n{FaceD}\n-- Left --\n{FaceL}\n-- Right --\n{FaceR}\n-- Back --\n{FaceB}");
     }
 
+    public bool IsSolved()
+    {
+        if (!FaceF.IsSolved) return false;
+        if (!FaceR.IsSolved) return false;
+        if (!FaceL.IsSolved) return false;
+        if (!FaceU.IsSolved) return false;
+        if (!FaceD.IsSolved) return false;
+        if (!FaceB.IsSolved) return false;
+        return true;
+    }
+
     public class Move
     {
         public Action ExecuteAction;
@@ -207,6 +218,8 @@ public class Cube
 
         private ulong Value;
 
+        private ulong solvedValue;
+
         public Face(byte color)
         {
             Fill(color);
@@ -224,7 +237,11 @@ public class Cube
             {
                 Value |= ((ulong)color << (i * 8));
             }
+
+            solvedValue = Value;
         }
+
+        public bool IsSolved => Value == solvedValue;
 
         public void Rotate(RotationDirection direction = RotationDirection.Clockwise)
         {

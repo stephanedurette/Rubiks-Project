@@ -16,7 +16,11 @@ public class GameManager : MonoBehaviour
 
         //TestSequence(c, new Cube.Move[] { c.F, c.L, c.D, c.L_, c.U, c.B, c.D_}); //doesn't work
 
-        TestSequence(c, new Cube.Move[] { c.R }); //works
+        Debug.Log(c);
+        c.F.Execute();
+        Debug.Log(c);
+        c.F.Reverse();
+        Debug.Log(c);
     }
 
     private void TestSequence(Cube c, Cube.Move[] moves)

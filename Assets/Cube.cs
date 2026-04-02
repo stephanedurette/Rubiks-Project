@@ -116,7 +116,7 @@ public class Cube
 
     public override string ToString()
     {
-        return ($"-- Front --\n{FaceF}\n-- Upper --\n{FaceU}\n-- Down --\n{FaceD}\n-- Left --\n{FaceL}\n-- Right --\n{FaceR}\n-- Back --\n{FaceB}");
+        return ($"---- CUBE STATE ----\n-- Front --\n{FaceF}\n-- Upper --\n{FaceU}\n-- Down --\n{FaceD}\n-- Left --\n{FaceL}\n-- Right --\n{FaceR}\n-- Back --\n{FaceB}");
     }
 
     public class Move

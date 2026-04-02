@@ -1,5 +1,3 @@
-using NUnit.Framework.Internal;
-using System;
 using System.Collections.Generic;
 
 public class Cube
@@ -129,7 +127,7 @@ public class Cube
 
             //cache starting edge values
             byte[] firstRotationFaceColors = new byte[3];
-            for(int i = 0; i < RotationFaces[startIndex].Indexes.Length; i++)
+            for (int i = 0; i < RotationFaces[startIndex].Indexes.Length; i++)
             {
                 firstRotationFaceColors[i] = RotationFaces[startIndex].Face.GetColor(RotationFaces[startIndex].Indexes[i]);
             }
@@ -137,7 +135,7 @@ public class Cube
             //loop through edges, replacing values with the next ones
             int iterations = 0;
             int currentIndex = startIndex;
-            while(iterations < 3)
+            while (iterations < 3)
             {
                 iterations++;
                 currentIndex += incrementer;

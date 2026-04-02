@@ -8,6 +8,7 @@ public class PuzzleVisual : MonoBehaviour
     [SerializeField] private TripleCircle rightCircle;
     [SerializeField] private TripleCircle topCircle;
 
+    #region Events
     [HideInInspector] private UnityEvent On_Left_InnerCircle_RightClicked;
     [HideInInspector] private UnityEvent On_Left_InnerCircle_LeftClicked;
     [HideInInspector] private UnityEvent On_Left_MiddleCircle_RightClicked;
@@ -15,6 +16,20 @@ public class PuzzleVisual : MonoBehaviour
     [HideInInspector] private UnityEvent On_Left_OuterCircle_RightClicked;
     [HideInInspector] private UnityEvent On_Left_OuterCircle_LeftClicked;
 
+    [HideInInspector] private UnityEvent On_Top_InnerCircle_RightClicked;
+    [HideInInspector] private UnityEvent On_Top_InnerCircle_LeftClicked;
+    [HideInInspector] private UnityEvent On_Top_MiddleCircle_RightClicked;
+    [HideInInspector] private UnityEvent On_Top_MiddleCircle_LeftClicked;
+    [HideInInspector] private UnityEvent On_Top_OuterCircle_RightClicked;
+    [HideInInspector] private UnityEvent On_Top_OuterCircle_LeftClicked;
+
+    [HideInInspector] private UnityEvent On_Right_InnerCircle_RightClicked;
+    [HideInInspector] private UnityEvent On_Right_InnerCircle_LeftClicked;
+    [HideInInspector] private UnityEvent On_Right_MiddleCircle_RightClicked;
+    [HideInInspector] private UnityEvent On_Right_MiddleCircle_LeftClicked;
+    [HideInInspector] private UnityEvent On_Right_OuterCircle_RightClicked;
+    [HideInInspector] private UnityEvent On_Right_OuterCircle_LeftClicked;
+    #endregion
     private void OnEnable()
     {
         SetupListeners();
@@ -28,5 +43,19 @@ public class PuzzleVisual : MonoBehaviour
         leftCircle.OnMiddleCircleRightClicked.AddListener(() => On_Left_MiddleCircle_RightClicked?.Invoke());
         leftCircle.OnOuterCircleLeftClicked.AddListener(() => On_Left_OuterCircle_LeftClicked?.Invoke());
         leftCircle.OnOuterCircleRightClicked.AddListener(() => On_Left_OuterCircle_RightClicked?.Invoke());
+
+        rightCircle.OnInnerCircleLeftClicked.AddListener(() => On_Right_InnerCircle_LeftClicked?.Invoke());
+        rightCircle.OnInnerCircleRightClicked.AddListener(() => On_Right_InnerCircle_RightClicked?.Invoke());
+        rightCircle.OnMiddleCircleLeftClicked.AddListener(() => On_Right_MiddleCircle_LeftClicked?.Invoke());
+        rightCircle.OnMiddleCircleRightClicked.AddListener(() => On_Right_MiddleCircle_RightClicked?.Invoke());
+        rightCircle.OnOuterCircleLeftClicked.AddListener(() => On_Right_OuterCircle_LeftClicked?.Invoke());
+        rightCircle.OnOuterCircleRightClicked.AddListener(() => On_Right_OuterCircle_RightClicked?.Invoke());
+
+        topCircle.OnInnerCircleLeftClicked.AddListener(() => On_Top_InnerCircle_LeftClicked?.Invoke());
+        topCircle.OnInnerCircleRightClicked.AddListener(() => On_Top_InnerCircle_RightClicked?.Invoke());
+        topCircle.OnMiddleCircleLeftClicked.AddListener(() => On_Top_MiddleCircle_LeftClicked?.Invoke());
+        topCircle.OnMiddleCircleRightClicked.AddListener(() => On_Top_MiddleCircle_RightClicked?.Invoke());
+        topCircle.OnOuterCircleLeftClicked.AddListener(() => On_Top_OuterCircle_LeftClicked?.Invoke());
+        topCircle.OnOuterCircleRightClicked.AddListener(() => On_Top_OuterCircle_RightClicked?.Invoke());
     }
 }

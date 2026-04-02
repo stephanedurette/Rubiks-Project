@@ -50,6 +50,60 @@ MonoBehaviour:
   leftCircle: {fileID: 6493256079603829038}
   rightCircle: {fileID: 5321850007261647593}
   topCircle: {fileID: 8923298371643719836}
+  On_Left_InnerCircle_RightClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Left_InnerCircle_LeftClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Left_MiddleCircle_RightClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Left_MiddleCircle_LeftClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Left_OuterCircle_RightClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Left_OuterCircle_LeftClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Top_InnerCircle_RightClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Top_InnerCircle_LeftClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Top_MiddleCircle_RightClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Top_MiddleCircle_LeftClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Top_OuterCircle_RightClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Top_OuterCircle_LeftClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Right_InnerCircle_RightClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Right_InnerCircle_LeftClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Right_MiddleCircle_RightClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Right_MiddleCircle_LeftClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Right_OuterCircle_RightClicked:
+    m_PersistentCalls:
+      m_Calls: []
+  On_Right_OuterCircle_LeftClicked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &5249219000511131631
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60,11 +114,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4110002089842300541, guid: b3dc02496deff6645877bcdcd5efc491, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.15
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4110002089842300541, guid: b3dc02496deff6645877bcdcd5efc491, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.01
+      value: -3.06
       objectReference: {fileID: 0}
     - target: {fileID: 4110002089842300541, guid: b3dc02496deff6645877bcdcd5efc491, type: 3}
       propertyPath: m_LocalPosition.z
@@ -134,11 +188,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4110002089842300541, guid: b3dc02496deff6645877bcdcd5efc491, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.71
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 4110002089842300541, guid: b3dc02496deff6645877bcdcd5efc491, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.79
+      value: -3.06
       objectReference: {fileID: 0}
     - target: {fileID: 4110002089842300541, guid: b3dc02496deff6645877bcdcd5efc491, type: 3}
       propertyPath: m_LocalPosition.z

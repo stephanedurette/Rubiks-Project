@@ -9,26 +9,26 @@ public class PuzzleVisual : MonoBehaviour
     [SerializeField] private TripleCircle topCircle;
 
     #region Events
-    [HideInInspector] private UnityEvent On_Left_InnerCircle_RightClicked;
-    [HideInInspector] private UnityEvent On_Left_InnerCircle_LeftClicked;
-    [HideInInspector] private UnityEvent On_Left_MiddleCircle_RightClicked;
-    [HideInInspector] private UnityEvent On_Left_MiddleCircle_LeftClicked; 
-    [HideInInspector] private UnityEvent On_Left_OuterCircle_RightClicked;
-    [HideInInspector] private UnityEvent On_Left_OuterCircle_LeftClicked;
+    [HideInInspector] public UnityEvent On_Left_InnerCircle_RightClicked;
+    [HideInInspector] public UnityEvent On_Left_InnerCircle_LeftClicked;
+    [HideInInspector] public UnityEvent On_Left_MiddleCircle_RightClicked;
+    [HideInInspector] public UnityEvent On_Left_MiddleCircle_LeftClicked; 
+    [HideInInspector] public UnityEvent On_Left_OuterCircle_RightClicked;
+    [HideInInspector] public UnityEvent On_Left_OuterCircle_LeftClicked;
 
-    [HideInInspector] private UnityEvent On_Top_InnerCircle_RightClicked;
-    [HideInInspector] private UnityEvent On_Top_InnerCircle_LeftClicked;
-    [HideInInspector] private UnityEvent On_Top_MiddleCircle_RightClicked;
-    [HideInInspector] private UnityEvent On_Top_MiddleCircle_LeftClicked;
-    [HideInInspector] private UnityEvent On_Top_OuterCircle_RightClicked;
-    [HideInInspector] private UnityEvent On_Top_OuterCircle_LeftClicked;
+    [HideInInspector] public UnityEvent On_Top_InnerCircle_RightClicked;
+    [HideInInspector] public UnityEvent On_Top_InnerCircle_LeftClicked;
+    [HideInInspector] public UnityEvent On_Top_MiddleCircle_RightClicked;
+    [HideInInspector] public UnityEvent On_Top_MiddleCircle_LeftClicked;
+    [HideInInspector] public UnityEvent On_Top_OuterCircle_RightClicked;
+    [HideInInspector] public UnityEvent On_Top_OuterCircle_LeftClicked;
 
-    [HideInInspector] private UnityEvent On_Right_InnerCircle_RightClicked;
-    [HideInInspector] private UnityEvent On_Right_InnerCircle_LeftClicked;
-    [HideInInspector] private UnityEvent On_Right_MiddleCircle_RightClicked;
-    [HideInInspector] private UnityEvent On_Right_MiddleCircle_LeftClicked;
-    [HideInInspector] private UnityEvent On_Right_OuterCircle_RightClicked;
-    [HideInInspector] private UnityEvent On_Right_OuterCircle_LeftClicked;
+    [HideInInspector] public UnityEvent On_Right_InnerCircle_RightClicked;
+    [HideInInspector] public UnityEvent On_Right_InnerCircle_LeftClicked;
+    [HideInInspector] public UnityEvent On_Right_MiddleCircle_RightClicked;
+    [HideInInspector] public UnityEvent On_Right_MiddleCircle_LeftClicked;
+    [HideInInspector] public UnityEvent On_Right_OuterCircle_RightClicked;
+    [HideInInspector] public UnityEvent On_Right_OuterCircle_LeftClicked;
     #endregion
     private void OnEnable()
     {

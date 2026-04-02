@@ -34,9 +34,9 @@ public class Cube
         R_Rotation = new RotationData(
             new RotationFace[] {
                 new RotationFace(FaceF, new int[]{ 2, 4, 7}),
-                new RotationFace(FaceU, new int[]{ 2, 4, 7}),
-                new RotationFace(FaceB, new int[]{ 5, 3, 0}),
                 new RotationFace(FaceD, new int[]{ 2, 4, 7}),
+                new RotationFace(FaceB, new int[]{ 5, 3, 0}),
+                new RotationFace(FaceU, new int[]{ 2, 4, 7}),
         });
 
         L_Rotation = new RotationData(
@@ -66,9 +66,9 @@ public class Cube
         D_Rotation = new RotationData(
             new RotationFace[] {
                 new RotationFace(FaceF, new int[]{ 5, 6, 7}),
-                new RotationFace(FaceR, new int[]{ 5, 6, 7}),
-                new RotationFace(FaceB, new int[]{ 5, 6, 7}),
                 new RotationFace(FaceL, new int[]{ 5, 6, 7}),
+                new RotationFace(FaceB, new int[]{ 5, 6, 7}),
+                new RotationFace(FaceR, new int[]{ 5, 6, 7}),
         });
 
         F = new(() => { FaceF.Rotate(); F_Rotation.Rotate(); });
@@ -202,7 +202,7 @@ public class Cube
 
         public static Dictionary<RotationDirection, int[]> rotationRemaps = new(){
             { RotationDirection.Clockwise, new int[]{ 5, 3, 0, 6, 1, 7, 4, 2 } },
-            { RotationDirection.CounterClockwise, new int[]{ 2, 4, 7, 1, 6, 0, 5, 3 } }
+            { RotationDirection.CounterClockwise, new int[]{ 2, 4, 7, 1, 6, 0, 3, 5 } }
         };
 
         private ulong Value;

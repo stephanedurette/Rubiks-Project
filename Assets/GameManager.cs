@@ -5,10 +5,10 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         var c = new Cube();
-        //TestSequence(c, new Cube.Move[] { c.F, c.R, c.D}); //doesn't work
-        //TestSequence(c, new Cube.Move[] { c.R, c.D }); //doesn't work
+        TestSequence(c, new Cube.Move[] { c.F, c.R, c.D}); //doesn't work
+        TestSequence(c, new Cube.Move[] { c.R, c.D }); //doesn't work
 
-        //TestSequence(c, new Cube.Move[] { c.R, c.U }); //doesn't work
+        TestSequence(c, new Cube.Move[] { c.R, c.U }); //doesn't work
         //TestSequence(c, new Cube.Move[] { c.F, c.U }); //works
         //TestSequence(c, new Cube.Move[] { c.F, c.R }); //works
         //TestSequence(c, new Cube.Move[] { c.D }); //works
@@ -17,9 +17,13 @@ public class GameManager : MonoBehaviour
         //TestSequence(c, new Cube.Move[] { c.F, c.L, c.D, c.L_, c.U, c.B, c.D_}); //doesn't work
 
         Debug.Log(c);
-        c.F.Execute();
+        c.R.Execute();
         Debug.Log(c);
-        c.F.Reverse();
+        c.D.Execute();
+        Debug.Log(c);
+        c.D.Reverse();
+        Debug.Log(c);
+        c.R.Reverse();
         Debug.Log(c);
     }
 

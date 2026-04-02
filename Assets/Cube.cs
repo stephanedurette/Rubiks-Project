@@ -246,7 +246,7 @@ public class Cube
                 { ColorRed, "Red"}, { ColorBlue, "Blue"}, { ColorGreen, "Green"}, { ColorYellow, "Yellow"}, { ColorWhite, "White"}, { ColorOrange, "Orange"}
             };
 
-            return $"{colorNames[GetColor(8)]} {colorNames[GetColor(7)]} {colorNames[GetColor(6)]}\n{colorNames[GetColor(5)]} {colorNames[GetColor(4)]} {colorNames[GetColor(3)]}\n{colorNames[GetColor(2)]} {colorNames[GetColor(1)]} {colorNames[GetColor(0)]}";
+            return $"{colorNames[GetColor(0)]} {colorNames[GetColor(1)]} {colorNames[GetColor(2)]}\n{colorNames[GetColor(3)]} CENTER {colorNames[GetColor(4)]}\n{colorNames[GetColor(5)]} {colorNames[GetColor(6)]} {colorNames[GetColor(7)]}";
         }
     }
 }

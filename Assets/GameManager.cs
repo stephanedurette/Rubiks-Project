@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
     {
         Cube c = new();
         Debug.Log(c);
-        c.F(Cube.RotationDirection.CounterClockwise);
+        c.B_.Execute();
         Debug.Log(c);
     }
 }

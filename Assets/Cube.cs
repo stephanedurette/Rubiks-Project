@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
@@ -8,6 +9,8 @@ public class Cube
     public RotationData F_Rotation, R_Rotation, L_Rotation, B_Rotation, U_Rotation, D_Rotation;
 
     public enum RotationDirection { Clockwise, CounterClockwise }
+
+    public Move F, R, B, L, U, D, F_, R_, B_, L_, U_, D_;
 
     public Cube()
     {
@@ -65,6 +68,32 @@ public class Cube
                 new RotationFace(FaceB, new int[]{ 5, 6, 7}),
                 new RotationFace(FaceL, new int[]{ 5, 6, 7}),
         });
+
+        F = new(() => { FaceF.Rotate(); F_Rotation.Rotate(); });
+        R = new(() => { FaceR.Rotate(); R_Rotation.Rotate(); });
+        L = new(() => { FaceL.Rotate(); L_Rotation.Rotate(); });
+        U = new(() => { FaceU.Rotate(); U_Rotation.Rotate(); });
+        D = new(() => { FaceD.Rotate(); D_Rotation.Rotate(); });
+        B = new(() => { FaceB.Rotate(); B_Rotation.Rotate(); });
+        F_ = new(() => { FaceF.Rotate(RotationDirection.CounterClockwise); F_Rotation.Rotate(RotationDirection.CounterClockwise); });
+        R_ = new(() => { FaceR.Rotate(RotationDirection.CounterClockwise); R_Rotation.Rotate(RotationDirection.CounterClockwise); });
+        L_ = new(() => { FaceL.Rotate(RotationDirection.CounterClockwise); L_Rotation.Rotate(RotationDirection.CounterClockwise); });
+        U_ = new(() => { FaceU.Rotate(RotationDirection.CounterClockwise); U_Rotation.Rotate(RotationDirection.CounterClockwise); });
+        D_ = new(() => { FaceD.Rotate(RotationDirection.CounterClockwise); D_Rotation.Rotate(RotationDirection.CounterClockwise); });
+        B_ = new(() => { FaceB.Rotate(RotationDirection.CounterClockwise); B_Rotation.Rotate(RotationDirection.CounterClockwise); });
+
+        F.ReverseAction = F_.ExecuteAction;
+        R.ReverseAction = R_.ExecuteAction;
+        L.ReverseAction = L_.ExecuteAction;
+        U.ReverseAction = U_.ExecuteAction;
+        D.ReverseAction = D_.ExecuteAction;
+        B.ReverseAction = B_.ExecuteAction;
+        F_.ReverseAction = F.ExecuteAction;
+        R_.ReverseAction = R.ExecuteAction;
+        L_.ReverseAction = L.ExecuteAction;
+        U_.ReverseAction = U.ExecuteAction;
+        D_.ReverseAction = D.ExecuteAction;
+        B_.ReverseAction = B.ExecuteAction;
     }
 
     public override string ToString()
@@ -72,246 +101,19 @@ public class Cube
         return ($"Front: {FaceF}\nUpper: {FaceU}\nDown: {FaceD}\nLeft: {FaceL}\nRight: {FaceR}\nBack: {FaceB}");
     }
 
-    public class D : Move
+    public class Move
     {
-        public D(Cube c) : base(c)
+        public Action ExecuteAction;
+        public Action ReverseAction;
+
+        public Move(Action ExecuteAction)
         {
+            this.ExecuteAction = ExecuteAction;
         }
 
-        public override void Execute()
-        {
-            c.FaceD.Rotate();
-            c.D_Rotation.Rotate();
-        }
+        public void Execute() => ExecuteAction?.Invoke();
 
-        public override void Reverse()
-        {
-            c.FaceD.Rotate(RotationDirection.CounterClockwise);
-            c.D_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public class L : Move
-    {
-        public L(Cube c) : base(c)
-        {
-        }
-
-        public override void Execute()
-        {
-            c.FaceL.Rotate();
-            c.L_Rotation.Rotate();
-        }
-
-        public override void Reverse()
-        {
-            c.FaceL.Rotate(RotationDirection.CounterClockwise);
-            c.L_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public class U : Move
-    {
-        public U(Cube c) : base(c)
-        {
-        }
-
-        public override void Execute()
-        {
-            c.FaceU.Rotate();
-            c.U_Rotation.Rotate();
-        }
-
-        public override void Reverse()
-        {
-            c.FaceU.Rotate(RotationDirection.CounterClockwise);
-            c.U_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public class R : Move
-    {
-        public R(Cube c) : base(c)
-        {
-        }
-
-        public override void Execute()
-        {
-            c.FaceR.Rotate();
-            c.R_Rotation.Rotate();
-        }
-
-        public override void Reverse()
-        {
-            c.FaceR.Rotate(RotationDirection.CounterClockwise);
-            c.R_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public class F : Move
-    {
-        public F(Cube c) : base(c)
-        {
-        }
-
-        public override void Execute()
-        {
-            c.FaceF.Rotate();
-            c.F_Rotation.Rotate();
-        }
-
-        public override void Reverse()
-        {
-            c.FaceF.Rotate(RotationDirection.CounterClockwise);
-            c.F_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public class B : Move
-    {
-        public B(Cube c) : base(c)
-        {
-        }
-
-        public override void Execute()
-        {
-            c.FaceB.Rotate();
-            c.B_Rotation.Rotate();
-        }
-
-        public override void Reverse()
-        {
-            c.FaceB.Rotate(RotationDirection.CounterClockwise);
-            c.B_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public class D_ : Move
-    {
-        public D_(Cube c) : base(c)
-        {
-        }
-
-        public override void Reverse()
-        {
-            c.FaceD.Rotate();
-            c.D_Rotation.Rotate();
-        }
-
-        public override void Execute()
-        {
-            c.FaceD.Rotate(RotationDirection.CounterClockwise);
-            c.D_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public class L_ : Move
-    {
-        public L_(Cube c) : base(c)
-        {
-        }
-
-        public override void Reverse()
-        {
-            c.FaceL.Rotate();
-            c.L_Rotation.Rotate();
-        }
-
-        public override void Execute()
-        {
-            c.FaceL.Rotate(RotationDirection.CounterClockwise);
-            c.L_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public class U_ : Move
-    {
-        public U_(Cube c) : base(c)
-        {
-        }
-
-        public override void Reverse()
-        {
-            c.FaceU.Rotate();
-            c.U_Rotation.Rotate();
-        }
-
-        public override void Execute()
-        {
-            c.FaceU.Rotate(RotationDirection.CounterClockwise);
-            c.U_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public class R_ : Move
-    {
-        public R_(Cube c) : base(c)
-        {
-        }
-
-        public override void Reverse()
-        {
-            c.FaceR.Rotate();
-            c.R_Rotation.Rotate();
-        }
-
-        public override void Execute()
-        {
-            c.FaceR.Rotate(RotationDirection.CounterClockwise);
-            c.R_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public class F_ : Move
-    {
-        public F_(Cube c) : base(c)
-        {
-        }
-
-        public override void Reverse()
-        {
-            c.FaceF.Rotate();
-            c.F_Rotation.Rotate();
-        }
-
-        public override void Execute()
-        {
-            c.FaceF.Rotate(RotationDirection.CounterClockwise);
-            c.F_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public class B_ : Move
-    {
-        public B_(Cube c) : base(c)
-        {
-        }
-
-        public override void Reverse()
-        {
-            c.FaceB.Rotate();
-            c.B_Rotation.Rotate();
-        }
-
-        public override void Execute()
-        {
-            c.FaceB.Rotate(RotationDirection.CounterClockwise);
-            c.B_Rotation.Rotate(RotationDirection.CounterClockwise);
-        }
-    }
-
-    public abstract class Move
-    {
-        protected Cube c;
-
-        public Move(Cube c)
-        {
-            this.c = c;
-        }
-
-        public abstract void Execute();
-
-        public abstract void Reverse();
+        public void Reverse() => ReverseAction?.Invoke();
     }
 
     public class RotationData

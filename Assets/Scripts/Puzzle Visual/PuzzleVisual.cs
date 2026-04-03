@@ -122,6 +122,12 @@ public class PuzzleVisual : MonoBehaviour
     }
 
     #region Moves
+
+    private void RotateFace()
+    {
+
+    }
+
     public void F()
     {
         Debug.Log("f");

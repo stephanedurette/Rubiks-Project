@@ -4,11 +4,19 @@ using UnityEngine.Events;
 
 public class PuzzleVisual : MonoBehaviour
 {
-    [Header("Internal References")]
+    [Header("References")]
     [SerializeField] private GameObject puzzleDotPrefab;
     [SerializeField] private TripleCircle leftCircle;
     [SerializeField] private TripleCircle rightCircle;
     [SerializeField] private TripleCircle topCircle;
+
+    [Header("Dot Positions")]
+    [SerializeField] private Transform[] FrontDotPositions;
+    [SerializeField] private Transform[] BackDotPositions;
+    [SerializeField] private Transform[] LeftDotPositions;
+    [SerializeField] private Transform[] RightDotPositions;
+    [SerializeField] private Transform[] UpDotPositions;
+    [SerializeField] private Transform[] DownDotPositions;
 
     #region Events
     [HideInInspector] public UnityEvent On_Left_InnerCircle_RightClicked;
@@ -38,11 +46,6 @@ public class PuzzleVisual : MonoBehaviour
     private void OnEnable()
     {
         SetupListeners();
-    }
-
-    private void Awake()
-    {
-        SetupPuzzleDots();
     }
 
     private void SetupListeners()
@@ -76,9 +79,9 @@ public class PuzzleVisual : MonoBehaviour
         return d;
     }
 
-    private void SetupPuzzleDots()
+    public void SetupPuzzleDots(Cube cube)
     {
-
+        dotPositions = new();
     }
 
 

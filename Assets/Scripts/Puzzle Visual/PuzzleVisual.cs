@@ -82,6 +82,22 @@ public class PuzzleVisual : MonoBehaviour
     public void SetupPuzzleDots(Cube cube)
     {
         dotPositions = new();
+
+        PopulateDots(UpDotPositions, dotPositions, cube.FaceU);
+        PopulateDots(DownDotPositions, dotPositions, cube.FaceD);
+        PopulateDots(LeftDotPositions, dotPositions, cube.FaceL);
+        PopulateDots(RightDotPositions, dotPositions, cube.FaceR);
+        PopulateDots(FrontDotPositions, dotPositions, cube.FaceF);
+        PopulateDots(BackDotPositions, dotPositions, cube.FaceB);
+    }
+
+    private void PopulateDots(Transform[] dotPositions, Dictionary<Transform, Dot> dotPositionDict, Cube.Face cubeFace)
+    {
+        for (int i = 0; i < dotPositions.Length - 1; i++) { 
+            Dot newDot = CreatePuzzleDot(Color.red, dotPositions[i].position);
+            dotPositionDict.Add(dotPositions[i], newDot);
+            //get and set the color
+        }
     }
 
 

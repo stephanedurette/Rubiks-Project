@@ -1559,6 +1559,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4213c10c1788a8b4d885a1571c623bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::PuzzleVisual
+  FrontColor: {r: 1, g: 0.063871056, b: 0, a: 1}
+  BackColor: {r: 0, g: 0.23867702, b: 1, a: 1}
+  LeftColor: {r: 0.25866985, g: 1, b: 0, a: 1}
+  RightColor: {r: 1, g: 0.611645, b: 0, a: 1}
+  UpColor: {r: 1, g: 0, b: 0.9104991, a: 1}
+  DownColor: {r: 1, g: 1, b: 1, a: 1}
   puzzleDotPrefab: {fileID: 5738916590545295315, guid: 548b62a03c4a5094b9dc51c2c27da97d, type: 3}
   leftCircle: {fileID: 6493256079603829038}
   rightCircle: {fileID: 5321850007261647593}

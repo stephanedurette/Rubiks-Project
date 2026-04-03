@@ -1,9 +1,19 @@
+using Codice.Client.Common.GameUI;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 
 public class PuzzleVisual : MonoBehaviour
 {
+    [Header("Starting Colors")]
+    [SerializeField] private Color FrontColor;
+    [SerializeField] private Color BackColor;
+    [SerializeField] private Color LeftColor;
+    [SerializeField] private Color RightColor;
+    [SerializeField] private Color UpColor;
+    [SerializeField] private Color DownColor;
+
     [Header("References")]
     [SerializeField] private GameObject puzzleDotPrefab;
     [SerializeField] private TripleCircle leftCircle;
@@ -93,10 +103,20 @@ public class PuzzleVisual : MonoBehaviour
 
     private void PopulateDots(Transform[] dotPositions, Dictionary<Transform, Dot> dotPositionDict, Cube.Face cubeFace)
     {
-        for (int i = 0; i < dotPositions.Length - 1; i++) { 
-            Dot newDot = CreatePuzzleDot(Color.red, dotPositions[i].position);
+        Dictionary<byte, Color> colorMap = new()
+        {
+            { Cube.Face.ColorBlue, BackColor},
+            { Cube.Face.ColorRed, RightColor },
+            { Cube.Face.ColorOrange, LeftColor },
+            { Cube.Face.ColorWhite, UpColor },
+            { Cube.Face.ColorYellow, DownColor },
+            { Cube.Face.ColorGreen, FrontColor },
+        };
+
+        for (int i = 0; i < dotPositions.Length; i++) {
+            Color faceColor = i == dotPositions.Length - 1 ? colorMap[cubeFace.StartingColor] : colorMap[cubeFace.GetColor(i)];
+            Dot newDot = CreatePuzzleDot(faceColor, dotPositions[i].position);
             dotPositionDict.Add(dotPositions[i], newDot);
-            //get and set the color
         }
     }
 

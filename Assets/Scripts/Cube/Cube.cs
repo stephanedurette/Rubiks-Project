@@ -220,9 +220,12 @@ public class Cube
 
         private ulong solvedValue;
 
+        public byte StartingColor { get; private set; }
+
         public Face(byte color)
         {
             Fill(color);
+            StartingColor = color;
         }
 
         public byte GetColor(int index) => (byte)((Value >> (index * 8)) & 0xFF);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -33,9 +34,17 @@ public class PuzzleVisual : MonoBehaviour
     [HideInInspector] public UnityEvent On_Right_OuterCircle_RightClicked;
     [HideInInspector] public UnityEvent On_Right_OuterCircle_LeftClicked;
     #endregion
+
+    private Dictionary<Transform, Dot> dotPositions;
+
     private void OnEnable()
     {
         SetupListeners();
+    }
+
+    private void Awake()
+    {
+        SetupPuzzleDots();
     }
 
     private void SetupListeners()
@@ -61,4 +70,11 @@ public class PuzzleVisual : MonoBehaviour
         topCircle.OnOuterCircleLeftClicked.AddListener(() => On_Top_OuterCircle_LeftClicked?.Invoke());
         topCircle.OnOuterCircleRightClicked.AddListener(() => On_Top_OuterCircle_RightClicked?.Invoke());
     }
+
+    private void SetupPuzzleDots()
+    {
+
+    }
+
+
 }

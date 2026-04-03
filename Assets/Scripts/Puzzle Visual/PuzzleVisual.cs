@@ -3,7 +3,10 @@ using UnityEngine.Events;
 
 public class PuzzleVisual : MonoBehaviour
 {
-    [Header("References")]
+    [Header("External References")]
+    [SerializeField] private PuzzleDotFactory dotFactory;
+
+    [Header("Internal References")]
     [SerializeField] private TripleCircle leftCircle;
     [SerializeField] private TripleCircle rightCircle;
     [SerializeField] private TripleCircle topCircle;

@@ -100,6 +100,16 @@ public class Cube
         Moves = new() { F, R, B, L, U, D, F_, R_, B_, L_, U_, D_ };
     }
 
+    public Move[] Shuffle(int moveCount)
+    {
+        Move[] moves = GetRandomMoveList(moveCount);
+        foreach(Move move in moves)
+        {
+            move.ExecuteAction();
+        }
+        return moves;
+    }
+
     public Move[] GetRandomMoveList(int count)
     {
         Random rnd = new Random();

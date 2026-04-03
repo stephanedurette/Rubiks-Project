@@ -19,6 +19,7 @@ public class PuzzleVisual : MonoBehaviour
     [SerializeField] private TripleCircle leftCircle;
     [SerializeField] private TripleCircle rightCircle;
     [SerializeField] private TripleCircle topCircle;
+    [SerializeField] private Transform dotParentTransform;
 
     [Header("Dot Positions")]
     [SerializeField] private Transform[] FrontDotPositions;
@@ -85,6 +86,7 @@ public class PuzzleVisual : MonoBehaviour
     private Dot CreatePuzzleDot(Color color, Vector2 position)
     {
         var d = GameObject.Instantiate(puzzleDotPrefab, position, Quaternion.identity).GetComponent<Dot>();
+        d.transform.SetParent(dotParentTransform, true);
         d.InnerColor = color;
         return d;
     }

@@ -14,8 +14,8 @@ public class PuzzleManager : MonoBehaviour
 
     private void Start()
     {
-        cube = new(); 
-        // shuffle cube
+        cube = new();
+        cube.Shuffle(25);
         puzzleVisual.SetupPuzzleDots(cube);
     }
 

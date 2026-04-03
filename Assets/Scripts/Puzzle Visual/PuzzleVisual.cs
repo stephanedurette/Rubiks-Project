@@ -4,10 +4,8 @@ using UnityEngine.Events;
 
 public class PuzzleVisual : MonoBehaviour
 {
-    [Header("External References")]
-    [SerializeField] private PuzzleDotFactory dotFactory;
-
     [Header("Internal References")]
+    [SerializeField] private GameObject puzzleDotPrefab;
     [SerializeField] private TripleCircle leftCircle;
     [SerializeField] private TripleCircle rightCircle;
     [SerializeField] private TripleCircle topCircle;
@@ -69,6 +67,13 @@ public class PuzzleVisual : MonoBehaviour
         topCircle.OnMiddleCircleRightClicked.AddListener(() => On_Top_MiddleCircle_RightClicked?.Invoke());
         topCircle.OnOuterCircleLeftClicked.AddListener(() => On_Top_OuterCircle_LeftClicked?.Invoke());
         topCircle.OnOuterCircleRightClicked.AddListener(() => On_Top_OuterCircle_RightClicked?.Invoke());
+    }
+
+    private Dot CreatePuzzleDot(Color color, Vector2 position)
+    {
+        var d = GameObject.Instantiate(puzzleDotPrefab, position, Quaternion.identity).GetComponent<Dot>();
+        d.InnerColor = color;
+        return d;
     }
 
     private void SetupPuzzleDots()

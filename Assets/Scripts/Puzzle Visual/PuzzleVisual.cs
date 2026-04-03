@@ -1,8 +1,6 @@
-using Codice.Client.Common.GameUI;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Rendering;
 
 public class PuzzleVisual : MonoBehaviour
 {
@@ -33,7 +31,7 @@ public class PuzzleVisual : MonoBehaviour
     [HideInInspector] public UnityEvent On_Left_InnerCircle_RightClicked;
     [HideInInspector] public UnityEvent On_Left_InnerCircle_LeftClicked;
     [HideInInspector] public UnityEvent On_Left_MiddleCircle_RightClicked;
-    [HideInInspector] public UnityEvent On_Left_MiddleCircle_LeftClicked; 
+    [HideInInspector] public UnityEvent On_Left_MiddleCircle_LeftClicked;
     [HideInInspector] public UnityEvent On_Left_OuterCircle_RightClicked;
     [HideInInspector] public UnityEvent On_Left_OuterCircle_LeftClicked;
 
@@ -115,12 +113,72 @@ public class PuzzleVisual : MonoBehaviour
             { Cube.Face.ColorGreen, FrontColor },
         };
 
-        for (int i = 0; i < dotPositions.Length; i++) {
+        for (int i = 0; i < dotPositions.Length; i++)
+        {
             Color faceColor = i == dotPositions.Length - 1 ? colorMap[cubeFace.StartingColor] : colorMap[cubeFace.GetColor(i)];
             Dot newDot = CreatePuzzleDot(faceColor, dotPositions[i].position);
             dotPositionDict.Add(dotPositions[i], newDot);
         }
     }
 
+    #region Moves
+    public void F()
+    {
+        Debug.Log("f");
+    }
+
+    public void F_()
+    {
+
+    }
+
+    public void L()
+    {
+
+    }
+
+    public void L_()
+    {
+
+    }
+
+    public void R()
+    {
+
+    }
+
+    public void R_()
+    {
+
+    }
+
+    public void U()
+    {
+
+    }
+
+    public void U_()
+    {
+
+    }
+    public void D()
+    {
+
+    }
+
+    public void D_()
+    {
+
+    }
+    public void B()
+    {
+
+    }
+
+    public void B_()
+    {
+
+    }
+    #endregion
 
 }

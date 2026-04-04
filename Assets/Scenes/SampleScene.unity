@@ -503,6 +503,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1474478513}
     m_Modifications:
     - target: {fileID: 1267421797146160366, guid: 7d8cdb96d316a604ab3048db3e35fc87, type: 3}
+      propertyPath: moveTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1267421797146160366, guid: 7d8cdb96d316a604ab3048db3e35fc87, type: 3}
       propertyPath: dotFactory
       value: 
       objectReference: {fileID: 0}

@@ -2,6 +2,7 @@ NOW
 moving face edges
 
 LATER
+circles overlapping looks weird
 Cube Solve Check
 UI for controls
 Timer

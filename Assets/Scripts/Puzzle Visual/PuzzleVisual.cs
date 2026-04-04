@@ -155,17 +155,17 @@ public class PuzzleVisual : MonoBehaviour
         float radius = Vector3.Distance(dot.transform.position, centerPosition.position);
         float startingAngle = Vector2.Angle((fromPosition.position - centerPosition.position), Vector2.right);
         float endingAngle = Vector2.Angle((toPosition.position - centerPosition.position), Vector2.right);
-        
-        //need to lerp out quad the distance
 
-        Debug.Log($"{startingAngle} {endingAngle}");
         float angleSpeed = (endingAngle - startingAngle) / moveTime;
 
         float currentAnimationTime = 0f;
         while (currentAnimationTime < moveTime) {
             
             currentAnimationTime += Time.deltaTime;
-            float newAngle = startingAngle + angleSpeed * currentAnimationTime;
+
+            float easeOutQuadTime = 1f - (1f - currentAnimationTime / moveTime) * (1f - currentAnimationTime / moveTime);
+            
+            float newAngle = Mathf.Lerp(startingAngle, endingAngle, easeOutQuadTime);
 
             float x = Mathf.Cos(newAngle * Mathf.Deg2Rad) * radius + centerPosition.position.x;
             float y = Mathf.Sin(newAngle * Mathf.Deg2Rad) * radius + centerPosition.position.y;

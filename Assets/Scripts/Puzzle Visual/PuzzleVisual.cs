@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -132,7 +133,7 @@ public class PuzzleVisual : MonoBehaviour
 
     private bool canMove = true;
 
-    #region Moves
+    
 
     private void RotateFace(Transform[] dotPositionsToMove, Cube.RotationDirection rotationDirection)
     {
@@ -147,11 +148,41 @@ public class PuzzleVisual : MonoBehaviour
         }
     }
 
+    private IEnumerator RotateDot(Transform fromPosition, Transform toPosition, Transform centerPosition)
+    {
+        Dot dot = dotPositions[fromPosition];
+
+        float radius = Vector3.Distance(dot.transform.position, centerPosition.position);
+        float startingAngle = Vector2.Angle((fromPosition.position - centerPosition.position), Vector2.right);
+        float endingAngle = Vector2.Angle((toPosition.position - centerPosition.position), Vector2.right);
+        
+        //need to lerp out quad the distance
+
+        Debug.Log($"{startingAngle} {endingAngle}");
+        float angleSpeed = (endingAngle - startingAngle) / moveTime;
+
+        float currentAnimationTime = 0f;
+        while (currentAnimationTime < moveTime) {
+            
+            currentAnimationTime += Time.deltaTime;
+            float newAngle = startingAngle + angleSpeed * currentAnimationTime;
+
+            float x = Mathf.Cos(newAngle * Mathf.Deg2Rad) * radius + centerPosition.position.x;
+            float y = Mathf.Sin(newAngle * Mathf.Deg2Rad) * radius + centerPosition.position.y;
+            dot.transform.position = new Vector2(x, y);
+            yield return new WaitForEndOfFrame();
+        }
+
+        dotPositions[toPosition] = dot;
+    }
+
+    #region Moves
     public void F()
     {
         if (!canMove) return;
 
         RotateFace(FrontDotPositions, Cube.RotationDirection.Clockwise);
+        StartCoroutine(RotateDot(LeftDotPositions[7], UpDotPositions[5], leftCircle.transform));
     }
 
     public void F_()

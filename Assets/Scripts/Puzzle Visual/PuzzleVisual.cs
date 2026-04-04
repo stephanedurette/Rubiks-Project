@@ -1,9 +1,13 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PuzzleVisual : MonoBehaviour
 {
+    [Header("Settings")]
+    [SerializeField] private float moveTime;
+
     [Header("Starting Colors")]
     [SerializeField] private Color FrontColor;
     [SerializeField] private Color BackColor;
@@ -51,6 +55,11 @@ public class PuzzleVisual : MonoBehaviour
     #endregion
 
     private Dictionary<Transform, Dot> dotPositions;
+
+    public static Dictionary<Cube.RotationDirection, int[]> rotationRemaps = new(){
+            { Cube.RotationDirection.CounterClockwise, new int[]{ 5, 3, 0, 6, 1, 7, 4, 2 } },
+            { Cube.RotationDirection.Clockwise, new int[]{ 2, 4, 7, 1, 6, 0, 3, 5 } }
+        };
 
     private void OnEnable()
     {
@@ -121,21 +130,35 @@ public class PuzzleVisual : MonoBehaviour
         }
     }
 
+    private bool canMove = true;
+
     #region Moves
 
-    private void RotateFace()
+    private void RotateFace(Transform[] dotPositionsToMove, Cube.RotationDirection rotationDirection)
     {
+        canMove = false;
+        for(int i = 0; i < dotPositionsToMove.Length - 1; i++)
+        {
+            Transform fromPosition = dotPositions[dotPositionsToMove[i]].transform;
+            Transform toPosition = dotPositions[dotPositionsToMove[rotationRemaps[rotationDirection][i]]].transform;
+            Dot dot = dotPositions[dotPositionsToMove[i]];
 
+            dot.transform.DOMove(toPosition.position, moveTime).OnComplete(() => { dotPositions[toPosition] = dot; canMove = true; });
+        }
     }
 
     public void F()
     {
-        Debug.Log("f");
+        if (!canMove) return;
+
+        RotateFace(FrontDotPositions, Cube.RotationDirection.Clockwise);
     }
 
     public void F_()
     {
+        if (!canMove) return;
 
+        RotateFace(FrontDotPositions, Cube.RotationDirection.CounterClockwise);
     }
 
     public void L()

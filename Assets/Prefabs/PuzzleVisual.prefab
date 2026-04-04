@@ -1591,6 +1591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4213c10c1788a8b4d885a1571c623bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::PuzzleVisual
+  moveTime: 1
   FrontColor: {r: 1, g: 0.063871056, b: 0, a: 1}
   BackColor: {r: 0, g: 0.23867702, b: 1, a: 1}
   LeftColor: {r: 0.25866985, g: 1, b: 0, a: 1}

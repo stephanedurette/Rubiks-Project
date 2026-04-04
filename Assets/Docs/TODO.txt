@@ -1,1 +1,8 @@
-Spawn Dots
+NOW
+moving face edges
+
+LATER
+Cube Solve Check
+UI for controls
+Timer
+Implement input buffer for cube moves

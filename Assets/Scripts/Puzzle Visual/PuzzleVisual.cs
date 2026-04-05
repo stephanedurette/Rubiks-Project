@@ -268,6 +268,7 @@ public class PuzzleVisual : MonoBehaviour
         }
 
         dotPositions[toPosition] = dot;
+        dot.transform.position = toPosition.position; //snap to position
     }
     public class CubeRotationData
     {
@@ -304,7 +305,7 @@ public class PuzzleVisual : MonoBehaviour
         while (incrementer < 4)
         {
             int currentIndex = direction == Cube.RotationDirection.Clockwise ? incrementer : 4 - incrementer - 1;
-            int nextIndex = direction == Cube.RotationDirection.Clockwise ? (currentIndex + 1) % 4 : (currentIndex - 1) % 4;
+            int nextIndex = direction == Cube.RotationDirection.Clockwise ? (currentIndex + 1).Mod(4) : (currentIndex - 1).Mod(4);
 
             for(int i = 0; i < rotationData.FaceRotations[currentIndex].Indexes.Length; i++) {
 

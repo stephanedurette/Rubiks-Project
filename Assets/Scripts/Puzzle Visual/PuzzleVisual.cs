@@ -241,7 +241,7 @@ public class PuzzleVisual : MonoBehaviour
         }
     }
 
-    private IEnumerator RotateDot(Transform fromPosition, Transform toPosition, Transform centerPosition)
+    private IEnumerator RotateDot(Transform fromPosition, Transform toPosition, Transform centerPosition, Cube.RotationDirection direction)
     {
         Dot dot = dotPositions[fromPosition];
 
@@ -253,7 +253,8 @@ public class PuzzleVisual : MonoBehaviour
         float endingAngle = Mathf.Atan2(endingVector.y, endingVector.x); //if (endingAngle < 0f) endingAngle += 2 * Mathf.PI;
         Debug.Log($"{startingAngle} {endingAngle}");
 
-        //if (endingAngle <= startingAngle) endingAngle += 360;
+        if (direction == Cube.RotationDirection.Clockwise && endingAngle > startingAngle) endingAngle -= Mathf.PI * 2;
+        if (direction == Cube.RotationDirection.CounterClockwise && endingAngle < startingAngle) endingAngle += Mathf.PI * 2;
 
         float currentAnimationTime = 0f;
         while (currentAnimationTime < moveTime)
@@ -320,7 +321,7 @@ public class PuzzleVisual : MonoBehaviour
                 Transform to = cubeFaceDotPositionMap[rotationData.FaceRotations[nextIndex].Face][toFaceIndex];
                 TripleCircle circle = rotationData.TripleCircle;
 
-                StartCoroutine(RotateDot(from, to, circle.transform));
+                StartCoroutine(RotateDot(from, to, circle.transform, direction));
             }
 
             incrementer++;

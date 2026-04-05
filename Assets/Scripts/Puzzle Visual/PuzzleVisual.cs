@@ -92,42 +92,42 @@ public class PuzzleVisual : MonoBehaviour
             },
             { Cube.CubeFace.Left,
                 new CubeRotationData(rightCircle, new FaceRotationData[]{
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}), //configure data here
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 3, 5}), //configure data here
+                    new FaceRotationData(Cube.CubeFace.Top, new int[]{ 0, 3, 5}),
+                    new FaceRotationData(Cube.CubeFace.Back, new int[]{ 7, 4, 2}),
+                    new FaceRotationData(Cube.CubeFace.Bottom, new int[]{ 0, 3, 5}),
                 })
             },
-            { Cube.CubeFace.Front,
-                new CubeRotationData(topCircle, new FaceRotationData[]{
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+            { Cube.CubeFace.Right,
+                new CubeRotationData(rightCircle, new FaceRotationData[]{
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 2, 4, 7}),
+                    new FaceRotationData(Cube.CubeFace.Top, new int[]{ 2, 4, 7}),
+                    new FaceRotationData(Cube.CubeFace.Back, new int[]{ 5, 3, 0}),
+                    new FaceRotationData(Cube.CubeFace.Bottom, new int[]{2, 4, 7 }),
                 })
             },
-            { Cube.CubeFace.Front,
-                new CubeRotationData(topCircle, new FaceRotationData[]{
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+            { Cube.CubeFace.Back,
+                new CubeRotationData(leftCircle, new FaceRotationData[]{
+                    new FaceRotationData(Cube.CubeFace.Left, new int[]{ 5, 3, 0}),
+                    new FaceRotationData(Cube.CubeFace.Top, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Right, new int[]{ 2, 4, 7}),
+                    new FaceRotationData(Cube.CubeFace.Bottom, new int[]{ 7, 6, 5}),
                 })
             },
-            { Cube.CubeFace.Front,
+            { Cube.CubeFace.Top,
                 new CubeRotationData(topCircle, new FaceRotationData[]{
                     new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Left, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Back, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Right, new int[]{ 0, 1, 2}),
                 })
             },
-            { Cube.CubeFace.Front,
+            { Cube.CubeFace.Bottom,
                 new CubeRotationData(topCircle, new FaceRotationData[]{
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
-                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 5, 6, 7}),
+                    new FaceRotationData(Cube.CubeFace.Left, new int[]{ 5, 6, 7}),
+                    new FaceRotationData(Cube.CubeFace.Back, new int[]{ 5, 6, 7}),
+                    new FaceRotationData(Cube.CubeFace.Right, new int[]{5, 6, 7 }),
                 })
             },
         };

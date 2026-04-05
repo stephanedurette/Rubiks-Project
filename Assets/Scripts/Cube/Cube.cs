@@ -157,7 +157,7 @@ public class Cube
         private RotationDirection reverseDirection;
         private Cube cube;
 
-        private Action<CubeFace, RotationDirection> OnMoveExecuted = delegate { };
+        public Action<CubeFace, RotationDirection> OnExecuted = delegate { };
 
         public static RotationDirection Reverse(RotationDirection original) => original == RotationDirection.Clockwise ? RotationDirection.CounterClockwise : RotationDirection.Clockwise;
 
@@ -174,14 +174,14 @@ public class Cube
             cube.faceDict[face].Rotate(direction);
             cube.rotationsDict[face].Rotate(direction);
 
-            OnMoveExecuted?.Invoke(face, direction);
+            OnExecuted?.Invoke(face, direction);
         }
 
         public void Reverse(){
             cube.faceDict[face].Rotate(reverseDirection);
             cube.rotationsDict[face].Rotate(reverseDirection);
 
-            OnMoveExecuted?.Invoke(face, reverseDirection);
+            OnExecuted?.Invoke(face, reverseDirection);
         }
     }
 

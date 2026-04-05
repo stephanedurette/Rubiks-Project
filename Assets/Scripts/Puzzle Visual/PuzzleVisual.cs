@@ -67,6 +67,22 @@ public class PuzzleVisual : MonoBehaviour
         SetupListeners();
     }
 
+    public void Bind(Cube cube)
+    {
+        foreach (var move in cube.Moves)
+        {
+            move.OnExecuted += OnCubeMoved;
+        }
+    }
+
+    public void UnBind(Cube cube)
+    {
+        foreach (var move in cube.Moves)
+        {
+            move.OnExecuted -= OnCubeMoved;
+        }
+    }
+
     private void SetupListeners()
     {
         leftCircle.OnInnerCircleLeftClicked.AddListener(() => On_Left_InnerCircle_LeftClicked?.Invoke());
@@ -133,12 +149,12 @@ public class PuzzleVisual : MonoBehaviour
 
     private bool canMove = true;
 
-    
+
 
     private void RotateFace(Transform[] dotPositionsToMove, Cube.RotationDirection rotationDirection)
     {
         canMove = false;
-        for(int i = 0; i < dotPositionsToMove.Length - 1; i++)
+        for (int i = 0; i < dotPositionsToMove.Length - 1; i++)
         {
             Transform fromPosition = dotPositions[dotPositionsToMove[i]].transform;
             Transform toPosition = dotPositions[dotPositionsToMove[rotationRemaps[rotationDirection][i]]].transform;
@@ -159,12 +175,13 @@ public class PuzzleVisual : MonoBehaviour
         float angleSpeed = (endingAngle - startingAngle) / moveTime;
 
         float currentAnimationTime = 0f;
-        while (currentAnimationTime < moveTime) {
-            
+        while (currentAnimationTime < moveTime)
+        {
+
             currentAnimationTime += Time.deltaTime;
 
             float easeOutQuadTime = 1f - (1f - currentAnimationTime / moveTime) * (1f - currentAnimationTime / moveTime);
-            
+
             float newAngle = Mathf.Lerp(startingAngle, endingAngle, easeOutQuadTime);
 
             float x = Mathf.Cos(newAngle * Mathf.Deg2Rad) * radius + centerPosition.position.x;
@@ -176,69 +193,15 @@ public class PuzzleVisual : MonoBehaviour
         dotPositions[toPosition] = dot;
     }
 
-    #region Moves
-    public void F()
+
+    public void OnCubeMoved(Cube.CubeFace face, Cube.RotationDirection direction)
     {
         if (!canMove) return;
 
-        RotateFace(FrontDotPositions, Cube.RotationDirection.Clockwise);
+        RotateFace(FrontDotPositions, direction);
         StartCoroutine(RotateDot(LeftDotPositions[7], UpDotPositions[5], leftCircle.transform));
     }
 
-    public void F_()
-    {
-        if (!canMove) return;
 
-        RotateFace(FrontDotPositions, Cube.RotationDirection.CounterClockwise);
-    }
-
-    public void L()
-    {
-
-    }
-
-    public void L_()
-    {
-
-    }
-
-    public void R()
-    {
-
-    }
-
-    public void R_()
-    {
-
-    }
-
-    public void U()
-    {
-
-    }
-
-    public void U_()
-    {
-
-    }
-    public void D()
-    {
-
-    }
-
-    public void D_()
-    {
-
-    }
-    public void B()
-    {
-
-    }
-
-    public void B_()
-    {
-
-    }
-    #endregion
 
 }

@@ -64,6 +64,8 @@ public class PuzzleVisual : MonoBehaviour
             { Cube.RotationDirection.Clockwise, new int[]{ 2, 4, 7, 1, 6, 0, 3, 5 } }
         };
 
+    private Dictionary<Cube.CubeFace, CubeRotationData> rotationData;
+
     private bool canMove = true;
 
     private void Awake()
@@ -76,6 +78,58 @@ public class PuzzleVisual : MonoBehaviour
             { Cube.CubeFace.Right, RightDotPositions },
             { Cube.CubeFace.Top, UpDotPositions },
             { Cube.CubeFace.Bottom, DownDotPositions },
+        };
+
+        rotationData = new()
+        {
+            { Cube.CubeFace.Front, 
+                new CubeRotationData(leftCircle, new FaceRotationData[]{ 
+                    new FaceRotationData(Cube.CubeFace.Left, new int[]{ 7, 4, 2}),
+                    new FaceRotationData(Cube.CubeFace.Top, new int[]{ 5, 6, 7}),
+                    new FaceRotationData(Cube.CubeFace.Right, new int[]{ 0, 3, 5}),
+                    new FaceRotationData(Cube.CubeFace.Bottom, new int[]{ 2, 1, 0}),
+                }) 
+            },
+            { Cube.CubeFace.Left,
+                new CubeRotationData(rightCircle, new FaceRotationData[]{
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}), //configure data here
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                })
+            },
+            { Cube.CubeFace.Front,
+                new CubeRotationData(topCircle, new FaceRotationData[]{
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                })
+            },
+            { Cube.CubeFace.Front,
+                new CubeRotationData(topCircle, new FaceRotationData[]{
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                })
+            },
+            { Cube.CubeFace.Front,
+                new CubeRotationData(topCircle, new FaceRotationData[]{
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                })
+            },
+            { Cube.CubeFace.Front,
+                new CubeRotationData(topCircle, new FaceRotationData[]{
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                    new FaceRotationData(Cube.CubeFace.Front, new int[]{ 0, 1, 2}),
+                })
+            },
         };
     }
 
@@ -215,17 +269,63 @@ public class PuzzleVisual : MonoBehaviour
 
         dotPositions[toPosition] = dot;
     }
+    public class CubeRotationData
+    {
+        public TripleCircle TripleCircle;
+        public FaceRotationData[] FaceRotations;
 
+        public CubeRotationData(TripleCircle tripleCircle, FaceRotationData[] faceRotations)
+        {
+            this.TripleCircle = tripleCircle;
+            this.FaceRotations = faceRotations;
+        }
+    }
+
+    public class FaceRotationData
+    {
+        public Cube.CubeFace Face;
+        public int[] Indexes;
+
+        public FaceRotationData(Cube.CubeFace face,  int[] indexes)
+        {
+            this.Face = face;
+            this.Indexes = indexes;
+        }
+    }
 
     public void OnCubeMoved(Cube.CubeFace face, Cube.RotationDirection direction)
     {
         cubeMoveInputBuffer.Enqueue(() => { Move(face, direction); });
     }
 
+    private void RotateEdges(CubeRotationData rotationData, Cube.RotationDirection direction)
+    {
+        int incrementer = 0;
+        while (incrementer < 4)
+        {
+            int currentIndex = direction == Cube.RotationDirection.Clockwise ? incrementer : 4 - incrementer - 1;
+            int nextIndex = direction == Cube.RotationDirection.Clockwise ? (currentIndex + 1) % 4 : (currentIndex - 1) % 4;
+
+            for(int i = 0; i < rotationData.FaceRotations[currentIndex].Indexes.Length; i++) {
+
+                int fromFaceIndex = rotationData.FaceRotations[currentIndex].Indexes[i];
+                int toFaceIndex = rotationData.FaceRotations[nextIndex].Indexes[i];
+
+                Transform from = cubeFaceDotPositionMap[rotationData.FaceRotations[currentIndex].Face][fromFaceIndex];
+                Transform to = cubeFaceDotPositionMap[rotationData.FaceRotations[nextIndex].Face][toFaceIndex];
+                TripleCircle circle = rotationData.TripleCircle;
+
+                StartCoroutine(RotateDot(from, to, circle.transform));
+            }
+
+            incrementer++;
+        }
+    }
+
     private void Move(Cube.CubeFace face, Cube.RotationDirection direction)
     {
         RotateFace(cubeFaceDotPositionMap[face], direction);
-        StartCoroutine(RotateDot(LeftDotPositions[7], UpDotPositions[5], leftCircle.transform));
+        RotateEdges(rotationData[face], direction);
     }
 
 

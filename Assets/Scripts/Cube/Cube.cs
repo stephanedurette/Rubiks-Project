@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 
 public class Cube
 {
@@ -8,11 +7,16 @@ public class Cube
 
     public RotationData F_Rotation, R_Rotation, L_Rotation, B_Rotation, U_Rotation, D_Rotation;
 
+    public enum CubeFace { Front, Back, Left, Right, Top, Bottom }
+
     public enum RotationDirection { Clockwise, CounterClockwise }
 
     public Move F, R, B, L, U, D, F_, R_, B_, L_, U_, D_;
 
     public List<Move> Moves;
+
+    private Dictionary<CubeFace, Face> faceDict;
+    private Dictionary<CubeFace, RotationData> rotationsDict;
 
     public Cube()
     {
@@ -71,31 +75,37 @@ public class Cube
                 new RotationFace(FaceR, new int[]{ 5, 6, 7}),
         });
 
-        F = new(() => { FaceF.Rotate(); F_Rotation.Rotate(); });
-        R = new(() => { FaceR.Rotate(); R_Rotation.Rotate(); });
-        L = new(() => { FaceL.Rotate(); L_Rotation.Rotate(); });
-        U = new(() => { FaceU.Rotate(); U_Rotation.Rotate(); });
-        D = new(() => { FaceD.Rotate(); D_Rotation.Rotate(); });
-        B = new(() => { FaceB.Rotate(); B_Rotation.Rotate(); });
-        F_ = new(() => { FaceF.Rotate(RotationDirection.CounterClockwise); F_Rotation.Rotate(RotationDirection.CounterClockwise); });
-        R_ = new(() => { FaceR.Rotate(RotationDirection.CounterClockwise); R_Rotation.Rotate(RotationDirection.CounterClockwise); });
-        L_ = new(() => { FaceL.Rotate(RotationDirection.CounterClockwise); L_Rotation.Rotate(RotationDirection.CounterClockwise); });
-        U_ = new(() => { FaceU.Rotate(RotationDirection.CounterClockwise); U_Rotation.Rotate(RotationDirection.CounterClockwise); });
-        D_ = new(() => { FaceD.Rotate(RotationDirection.CounterClockwise); D_Rotation.Rotate(RotationDirection.CounterClockwise); });
-        B_ = new(() => { FaceB.Rotate(RotationDirection.CounterClockwise); B_Rotation.Rotate(RotationDirection.CounterClockwise); });
+        F = new(CubeFace.Front, RotationDirection.Clockwise, this);
+        F_ = new(CubeFace.Front, RotationDirection.CounterClockwise, this);
+        B = new(CubeFace.Back, RotationDirection.Clockwise, this);
+        B_ = new(CubeFace.Back, RotationDirection.CounterClockwise, this);
+        U = new(CubeFace.Top, RotationDirection.Clockwise, this);
+        U_ = new(CubeFace.Top, RotationDirection.CounterClockwise, this);
+        D = new(CubeFace.Bottom, RotationDirection.Clockwise, this);
+        D_ = new(CubeFace.Bottom, RotationDirection.CounterClockwise, this);
+        R = new(CubeFace.Right, RotationDirection.Clockwise, this);
+        R_ = new(CubeFace.Right, RotationDirection.CounterClockwise, this);
+        L = new(CubeFace.Left, RotationDirection.Clockwise, this);
+        L_ = new(CubeFace.Left, RotationDirection.CounterClockwise, this);
 
-        F.ReverseAction = F_.ExecuteAction;
-        R.ReverseAction = R_.ExecuteAction;
-        L.ReverseAction = L_.ExecuteAction;
-        U.ReverseAction = U_.ExecuteAction;
-        D.ReverseAction = D_.ExecuteAction;
-        B.ReverseAction = B_.ExecuteAction;
-        F_.ReverseAction = F.ExecuteAction;
-        R_.ReverseAction = R.ExecuteAction;
-        L_.ReverseAction = L.ExecuteAction;
-        U_.ReverseAction = U.ExecuteAction;
-        D_.ReverseAction = D.ExecuteAction;
-        B_.ReverseAction = B.ExecuteAction;
+        faceDict = new()
+        {
+            { CubeFace.Front, FaceF},
+            { CubeFace.Back, FaceB},
+            { CubeFace.Left, FaceL},
+            { CubeFace.Right, FaceR},
+            { CubeFace.Top, FaceU},
+            { CubeFace.Bottom, FaceB},
+        };
+
+        rotationsDict = new() {
+            { CubeFace.Front, F_Rotation},
+            { CubeFace.Back, B_Rotation},
+            { CubeFace.Left, L_Rotation},
+            { CubeFace.Right, R_Rotation},
+            { CubeFace.Top, U_Rotation},
+            { CubeFace.Bottom, B_Rotation},
+        };
 
         Moves = new() { F, R, B, L, U, D, F_, R_, B_, L_, U_, D_ };
     }
@@ -103,9 +113,9 @@ public class Cube
     public Move[] Shuffle(int moveCount)
     {
         Move[] moves = GetRandomMoveList(moveCount);
-        foreach(Move move in moves)
+        foreach (Move move in moves)
         {
-            move.ExecuteAction();
+            move.Execute();
         }
         return moves;
     }
@@ -116,7 +126,7 @@ public class Cube
 
         Move[] list = new Move[count];
 
-        for(int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
             list[i] = Moves[rnd.Next(0, Moves.Count)];
         }
@@ -142,17 +152,37 @@ public class Cube
 
     public class Move
     {
-        public Action ExecuteAction;
-        public Action ReverseAction;
+        private CubeFace face;
+        private RotationDirection direction;
+        private RotationDirection reverseDirection;
+        private Cube cube;
 
-        public Move(Action ExecuteAction)
+        private Action<CubeFace, RotationDirection> OnMoveExecuted = delegate { };
+
+        public static RotationDirection Reverse(RotationDirection original) => original == RotationDirection.Clockwise ? RotationDirection.CounterClockwise : RotationDirection.Clockwise;
+
+        public Move(CubeFace face, RotationDirection direction, Cube cube)
         {
-            this.ExecuteAction = ExecuteAction;
+            this.face = face;
+            this.direction = direction;
+            this.reverseDirection = Reverse(direction);
+            this.cube = cube;
         }
 
-        public void Execute() => ExecuteAction?.Invoke();
+        public void Execute()
+        {
+            cube.faceDict[face].Rotate(direction);
+            cube.rotationsDict[face].Rotate(direction);
 
-        public void Reverse() => ReverseAction?.Invoke();
+            OnMoveExecuted?.Invoke(face, direction);
+        }
+
+        public void Reverse(){
+            cube.faceDict[face].Rotate(reverseDirection);
+            cube.rotationsDict[face].Rotate(reverseDirection);
+
+            OnMoveExecuted?.Invoke(face, reverseDirection);
+        }
     }
 
     public class RotationData

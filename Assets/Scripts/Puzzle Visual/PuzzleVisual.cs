@@ -56,11 +56,25 @@ public class PuzzleVisual : MonoBehaviour
     #endregion
 
     private Dictionary<Transform, Dot> dotPositions;
+    private Dictionary<Cube.CubeFace, Transform[]> cubeFaceDotPositionMap;
 
     public static Dictionary<Cube.RotationDirection, int[]> rotationRemaps = new(){
             { Cube.RotationDirection.CounterClockwise, new int[]{ 5, 3, 0, 6, 1, 7, 4, 2 } },
             { Cube.RotationDirection.Clockwise, new int[]{ 2, 4, 7, 1, 6, 0, 3, 5 } }
         };
+
+    private void Awake()
+    {
+        cubeFaceDotPositionMap = new()
+        {
+            { Cube.CubeFace.Front, FrontDotPositions },
+            { Cube.CubeFace.Back, BackDotPositions },
+            { Cube.CubeFace.Left, LeftDotPositions },
+            { Cube.CubeFace.Right, RightDotPositions },
+            { Cube.CubeFace.Top, UpDotPositions },
+            { Cube.CubeFace.Bottom, DownDotPositions },
+        };
+    }
 
     private void OnEnable()
     {
@@ -198,7 +212,7 @@ public class PuzzleVisual : MonoBehaviour
     {
         if (!canMove) return;
 
-        RotateFace(FrontDotPositions, direction);
+        RotateFace(cubeFaceDotPositionMap[face], direction);
         StartCoroutine(RotateDot(LeftDotPositions[7], UpDotPositions[5], leftCircle.transform));
     }
 

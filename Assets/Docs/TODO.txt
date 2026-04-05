@@ -1,4 +1,5 @@
 NOW
+bind function on the PuzzleVisual
 moving face edges
 
 LATER

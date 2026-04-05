@@ -6,4 +6,3 @@ circles overlapping looks weird
 Cube Solve Check
 UI for controls
 Timer
-Implement input buffer for cube moves

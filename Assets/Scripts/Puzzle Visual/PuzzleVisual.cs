@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -63,6 +64,8 @@ public class PuzzleVisual : MonoBehaviour
             { Cube.RotationDirection.Clockwise, new int[]{ 2, 4, 7, 1, 6, 0, 3, 5 } }
         };
 
+    private bool canMove = true;
+
     private void Awake()
     {
         cubeFaceDotPositionMap = new()
@@ -76,9 +79,21 @@ public class PuzzleVisual : MonoBehaviour
         };
     }
 
+    private Queue<Action> cubeMoveInputBuffer;
+
     private void OnEnable()
     {
         SetupListeners();
+        cubeMoveInputBuffer = new();
+    }
+
+    private void Update()
+    {
+        if (canMove && cubeMoveInputBuffer.TryDequeue(out var a))
+        {
+            a();
+            canMove = false;
+        }
     }
 
     public void Bind(Cube cube)
@@ -160,14 +175,8 @@ public class PuzzleVisual : MonoBehaviour
             dotPositionDict.Add(dotPositions[i], newDot);
         }
     }
-
-    private bool canMove = true;
-
-
-
     private void RotateFace(Transform[] dotPositionsToMove, Cube.RotationDirection rotationDirection)
     {
-        canMove = false;
         for (int i = 0; i < dotPositionsToMove.Length - 1; i++)
         {
             Transform fromPosition = dotPositions[dotPositionsToMove[i]].transform;
@@ -210,8 +219,11 @@ public class PuzzleVisual : MonoBehaviour
 
     public void OnCubeMoved(Cube.CubeFace face, Cube.RotationDirection direction)
     {
-        if (!canMove) return;
+        cubeMoveInputBuffer.Enqueue(() => { Move(face, direction); });
+    }
 
+    private void Move(Cube.CubeFace face, Cube.RotationDirection direction)
+    {
         RotateFace(cubeFaceDotPositionMap[face], direction);
         StartCoroutine(RotateDot(LeftDotPositions[7], UpDotPositions[5], leftCircle.transform));
     }

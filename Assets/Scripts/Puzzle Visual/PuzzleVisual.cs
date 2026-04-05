@@ -245,11 +245,15 @@ public class PuzzleVisual : MonoBehaviour
     {
         Dot dot = dotPositions[fromPosition];
 
-        float radius = Vector3.Distance(dot.transform.position, centerPosition.position);
-        float startingAngle = Vector2.Angle((fromPosition.position - centerPosition.position), Vector2.right);
-        float endingAngle = Vector2.Angle((toPosition.position - centerPosition.position), Vector2.right);
+        Vector2 startingVector = fromPosition.position - centerPosition.position;
+        Vector2 endingVector = toPosition.position - centerPosition.position;
 
-        float angleSpeed = (endingAngle - startingAngle) / moveTime;
+        float radius = Vector3.Distance(dot.transform.position, centerPosition.position);
+        float startingAngle = Mathf.Atan2(startingVector.y, startingVector.x); //if (startingAngle < 0f) startingAngle += 2 * Mathf.PI;
+        float endingAngle = Mathf.Atan2(endingVector.y, endingVector.x); //if (endingAngle < 0f) endingAngle += 2 * Mathf.PI;
+        Debug.Log($"{startingAngle} {endingAngle}");
+
+        //if (endingAngle <= startingAngle) endingAngle += 360;
 
         float currentAnimationTime = 0f;
         while (currentAnimationTime < moveTime)
@@ -261,8 +265,8 @@ public class PuzzleVisual : MonoBehaviour
 
             float newAngle = Mathf.Lerp(startingAngle, endingAngle, easeOutQuadTime);
 
-            float x = Mathf.Cos(newAngle * Mathf.Deg2Rad) * radius + centerPosition.position.x;
-            float y = Mathf.Sin(newAngle * Mathf.Deg2Rad) * radius + centerPosition.position.y;
+            float x = Mathf.Cos(newAngle) * radius + centerPosition.position.x;
+            float y = Mathf.Sin(newAngle) * radius + centerPosition.position.y;
             dot.transform.position = new Vector2(x, y);
             yield return new WaitForEndOfFrame();
         }
